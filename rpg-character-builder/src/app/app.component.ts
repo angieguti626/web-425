@@ -35,11 +35,11 @@ import { RouterLink, RouterOutlet } from '@angular/router';
     <footer class="footer">
       <nav class="footer-nav">
         <a routerLink="/">Home</a> |
-        <a href="#">Create Character</a> |
-        <a href="#">Create Guild</a> |
-        <a href="#">Create Faction</a> |
-        <a href="#">Players</a> |
-        <a href="#">Sign In</a>
+        <a routerLink="/create-character">Create Character</a> |
+        <a routerLink="/create-guild">Create Guild</a> |
+        <a routerLink="/character-faction">Create Faction</a> |
+        <a routerLink="/players">Players</a> |
+        <a routerLink="/signin">Sign In</a>
       </nav>
       <p>&copy; RPG Character Builder Project by Angelica Gutierrez</p>
     </footer>
