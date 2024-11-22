@@ -13,6 +13,7 @@ import { Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
+
 @Component({
   selector: 'app-create-character',
   standalone: true,
@@ -20,30 +21,25 @@ import { CommonModule } from '@angular/common';
   template: `
   <div class="character-form-container">
     <form class="character-form" #characterForm="ngForm"
-    (ngSubmit)="addToCharacter();">
-    <h1>Complete the form below to place a new character.</h1>
+    (ngSubmit)="generateCharacter();">
+    <h1>Complete the form below to create a new character.</h1>
 
         <fieldset>
           <legend>My Character</legend>
 
           <label for="name">Character Name</label>
-          <input type="text" id="name" name="name" ngModel required>
+          <input type="text" id="name" name="name"
+          [(ngModel)]="name" ngModel required>
 
 
-          <label for="characterGender">Character Gender</label>
-          <select gender="characterGender" id="characterGender" [(ngModel)]="selectedCharacterId"
-            ngModel>
-            @for (character of characters; track character) {
-             <option value="{{ character.id }}">{{ character.gender }}</option>
-            }
+          <label for="gender">Character Gender</label>
+          <select name="gender" id="gender" [(ngModel)]="gender" ngModel required>
+            <option *ngFor="let g of genders" [value]="g">{{ g }}</option>
           </select>
 
-          <label for="characterGender">Character Class</label>
-          <select gender="characterClass" id="characterClass" [(ngModel)]="selectedCharacterId"
-            ngModel>
-            @for (character of characters; track character) {
-             <option value="{{ character.id }}">{{ character.class }}</option>
-            }
+          <label for="characterClass">Character Class</label>
+          <select name="class" id="class" [(ngModel)]="class" ngModel required>
+           <option *ngFor="let characterClass of classes" [value]="characterClass">{{ characterClass }}</option>
           </select>
 
           <input type="submit" value="Add to Character" />
@@ -124,18 +120,33 @@ export class CreateCharacterComponent {
   characters: Character[];
   summary: Summary;
   selectedCharacterId: number;
+
+  name: string;
+  gender: string;
+  class: string;
+
+  genders: string[];
+  classes: string[];
+
   constructor() {
     this.characters = [
-      { id: 1, name: "Thorn", gender: "Male", class:"Warrior" },
+      { id: 1, name: "Thorn", gender: "Male", class: "Warrior" },
       { id: 2, name: "Rose", gender: "Female", class: "Mage" },
-      { id: 3, name: "Vamp", gender: "Other", class:"Rogue" }
+      { id: 3, name: "Vamp", gender: "Other", class: "Rogue" }
     ];
 
     this.summary = { characters: [], characterId: 0 };
     this.selectedCharacterId = this.characters[0].id;
+
+    this.name = "";
+    this.gender = "";
+    this.class = "";
+
+    this.genders = ['Male', 'Female', 'Other'];
+    this.classes = ['Rogue', 'Warrior', 'Mage'];
   }
 
-  addToCharacter() {
+  generateCharacter() {
     const selectedCharacterNum = Number(this.selectedCharacterId);
 
     const selectedCharacter = this.characters.find(character => character.id === selectedCharacterNum);
@@ -165,5 +176,8 @@ export class CreateCharacterComponent {
     if (this.characters.length > 0) {
       this.selectedCharacterId = this.characters[0].id;
     }
+    this.name = "";
+    this.gender = "";
+    this.class = "";
   }
 }
