@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 // Importing RouterLink
 import { RouterLink, RouterOutlet } from '@angular/router';
+// Importing CookieService and AuthService
+import { CookieService } from 'ngx-cookie-service';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +16,15 @@ import { RouterLink, RouterOutlet } from '@angular/router';
     <header class="banner">
       <img src="/assets/rpg-banner.png" alt="website banner for RPG" class="banner-img">
     </header>
+
+     <div class="sign-in-container">
+      @if (email) {
+        <p>Welcome, {{ email }}!</p>
+        <button (click)="signout()">Sign Out</button>
+      } @else {
+        <a routerLink="/signin" class="sign-in-link">Sign In</a>
+      }
+    </div>
 
     <main class="main-content">
 
@@ -47,10 +59,40 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 `,
 styles: [
   `
+  .sign-in-container {
+        text-align: right;
+        padding-right: 20px;
+        margin-top: 10px;
+      }
+
+      .sign-in-link {
+        color: #000000;
+        text-decoration: none;
+        font-family: 'Lato', sans-serif;
+      }
+
+      .sign-in-link:hover {
+        text-decoration: underline;
+      }
   `
   ]
 })
 
 export class AppComponent {
-  title = 'rpg-character-builder';
+   email?: string;
+  constructor(private authService: AuthService, private cookieService:
+    CookieService) {
+  }
+  // Determines if user is auth or not
+  ngOnInit() {
+    this.authService.getAuthState().subscribe((isAuth) => {
+      if (isAuth) {
+        this.email = this.cookieService.get('session_user');
+      }
+    });
+  }
+  // Signs out user
+  signout() {
+    this.authService.signout();
+  }
 }
