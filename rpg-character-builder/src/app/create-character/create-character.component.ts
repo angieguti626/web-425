@@ -12,12 +12,11 @@ export interface Summary {
 import { Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
+import { CharacterListComponent } from '../character-list/character-list.component';
 
 @Component({
   selector: 'app-create-character',
   standalone: true,
-  imports: [FormsModule, CommonModule],
   template: `
   <div class="character-form-container">
     <form class="character-form" #characterForm="ngForm"
@@ -113,7 +112,8 @@ import { CommonModule } from '@angular/common';
   .character-summary li {
     margin-bottom: 10px;
     padding: 5px;
-  }`
+  }`,
+  imports: [FormsModule, CommonModule, CharacterListComponent],
 })
 
 export class CreateCharacterComponent {
